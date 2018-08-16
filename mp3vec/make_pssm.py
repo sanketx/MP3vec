@@ -69,7 +69,10 @@ def make_pssm():
 		print("The specified BLAST DB file does not exist")
 		sys.exit(0)
 
-	if num_threads < 1 or num_threads is None:
+	if num_threads is None:
+		num_threads = "1"
+	
+	if num_threads < 1:
 		num_threads = "1"
 
 	else: num_threads = str(num_threads)
