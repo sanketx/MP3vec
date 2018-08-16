@@ -123,7 +123,41 @@ Using TensorFlow backend.
 The package has now been successfully installed along with the utility scripts.
 
 ## Installation on Windows
-To be added
+
+```console
+C:\Users\Sanket>cd mp3_project
+
+C:\Users\Sanket\mp3_project>pip install virtualenv
+C:\Users\Sanket\mp3_project>virtualenv mp3env
+Using base prefix 'c:\\users\\sanket\\appdata\\local\\programs\\python\\python36'
+New python executable in C:\Users\Sanket\mp3_project\mp3env\Scripts\python.exe
+Installing setuptools, pip, wheel...done.
+
+C:\Users\Sanket\mp3_project>mp3env\Scripts\activate
+
+(mp3env) C:\Users\Sanket\mp3_project>
+```
+
+```console
+(mp3env) C:\Users\Sanket\mp3_project>pip install MP3vec-master\.
+Processing c:\users\sanket\mp3_project\mp3vec-master
+Collecting tensorflow>=1.8.0 (from mp3vec==0.0.1)
+...(text ommited)
+Successfully installed absl-py-0.4.0 astor-0.7.1 biopython-1.72 gast-0.2.0 grpcio-1.14.1 h5py-2.8.0 keras-2.2.2 keras-applications-1.0.4 keras-preprocessing-1.0.2 markdown-2.6.11 mp3vec-0.0.1 numpy-1.14.5 protobuf-3.6.1 pyyaml-3.13 scipy-1.1.0 setuptools-39.1.0 six-1.11.0 tensorboard-1.10.0 tensorflow-1.10.0 termcolor-1.1.0 werkzeug-0.14.1
+
+(mp3env) C:\Users\Sanket\mp3_project>
+```
+
+```console
+(mp3env) C:\Users\Sanket\mp3_project>python
+Python 3.6.6 (v3.6.6:4cf1f54eb7, Jun 27 2018, 03:37:03) [MSC v.1900 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import mp3vec
+Using TensorFlow backend.
+>>> mp3vec.__version__
+'0.0.1'
+>>>
+```
 
 # Usage instructions
 
@@ -161,8 +195,6 @@ optional arguments:
 (mp3env) sanket@GPU:~/mp3_project$ 
 ```
 
-Add Windows scripts
-
 ## Command line script for generating PSSM files using PSI-BLAST
 
 To be added
@@ -193,8 +225,6 @@ optional arguments:
                         NNumber of threads (CPUs) to use in the BLAST search
 (mp3env) sanket@GPU:~/mp3_project$ 
 ```
-
-Add Windows script
 
 ### Example 1: Using the command line scripts to generate MP3 vectors 
 
@@ -234,8 +264,6 @@ Vectorized PROT2, file 2 / 2
 PROT1.csv  PROT1.npy  PROT2.csv  PROT2.npy
 (mp3env) sanket@GPU:~/mp3_project$
 ```
-
-Add Windows script
 
 ## Example 2: A Python script for generating MP3 vectors
 The mp3vec module has a core MP3Model class. The pretrained model provided with this package is used by default but you can specify a custom model by specifying the model file in the class constructor. A utility function "encode_file" is provided in order to read a PSSM file and convert it into a numpy array which can then be fed as input to the model. Note that this function automatically reads the protein sequence from the file and converts it to a one-hot vector form. The function returns this sequence along with the protein matrix (one-hot vector + PSSM vec). The model's vectorize function can then be used to convert this protein matrix into the MP3 vector.
