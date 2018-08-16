@@ -226,7 +226,7 @@ optional arguments:
 (mp3env) sanket@GPU:~/mp3_project$ 
 ```
 
-### Example 1: Using the command line scripts to generate MP3 vectors 
+## Example 1: Using the command line scripts to generate MP3 vectors 
 
 To be added
 
