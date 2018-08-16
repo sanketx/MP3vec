@@ -64,11 +64,14 @@ Using TensorFlow backend.
 The package has now been successfully installed along with the utility scripts.
 
 # Installation on Windows
-To be filled
+To be added
+
+# Setting up PSI-BLAST with Uniref90
+To be added
 
 # Usage Instructions
 
-## Example Script For Generating MP3 vectors
+## Example 1: A Python Script For Generating MP3 vectors
 The mp3vec module has a core MP3Model class. The pretrained model provided with this package is used by default but you can specify a custom model by specifying the model file in the class constructor. A utility function "encode_file" is provided in order to read a PSSM file and convert it into a numpy array which can then be fed as input to the model. Note that this function automatically reads the protein sequence from the file and converts it to a one-hot vector form. The function returns this sequence along with the protein matrix (one-hot vector + PSSM vec). The model's vectorize function can then be used to convert this protein matrix into the MP3 vector.
 
 ```python
@@ -76,4 +79,105 @@ from mp3vec import *
 model = MP3Model()
 seq, protein_matrix = encode_file("PROT2.pssm")
 vec = model.vectorize(protein_matrix)
+```
+## Command Line Script For Generating MP3 Vectors
+
+A command line utility, __mp3vec__ has been provided for users who wish to generate MP3vecs without writing code. This utility is automatically installed when you install the mp3vec python package. You can specify a directory containing PSSM files and the script will vectorize them and write them to a destination directory. Currently, two output formats are supported, the binary numpy format with a .npy extension and the CSV format with a .csv extension. You need to specify the format while using the script. An optional model parameter is available in case you want to use a custom model, by default the script uses the pre-trained model provided in the package. You can view the flags using the "-h" option.
+
+```console
+(mp3env) sanket@GPU:~/mp3_project$ mp3vec -h
+Using TensorFlow backend.
+usage: mp3vec [-h] -i IN_DIRECTORY -o OUT_DIRECTORY [-m MODEL_FILE] -t
+              {NPY,CSV}
+
+MP3vec command line utility. This program can be used to generate Multi-
+Purpose Protein Prediction vectors as described in the paper. It accepts PSSM
+files as input and creates a protein feature vector that can be saved as
+either a Numpy array or as a CSV file. To use this program, please provide the
+path to a directory containing PSSM files. Ensure that these files have a
+'.pssm' extension or they will be ignored. You also have to specify an output
+directory where the generated vectors will be stored. Finally, you need to
+specify the output file format, either numpy array or CSV file.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i IN_DIRECTORY, --in_directory IN_DIRECTORY
+                        Path to Input Directory containing PSSM files
+  -o OUT_DIRECTORY, --out_directory OUT_DIRECTORY
+                        Path to Output Directory to write MP3vec files
+  -m MODEL_FILE, --model_file MODEL_FILE
+                        Path to MP3 model file. Optional parameter for custom
+                        models
+  -t {NPY,CSV}, --otype {NPY,CSV}
+                        Output file format. numpy (NPY) or comma separated
+                        values (CSV)
+(mp3env) sanket@GPU:~/mp3_project$ 
+```
+## Command Line Script For Generating PSSM Files Using PSI-BLAST
+
+To be added
+
+```console
+(mp3env) sanket@GPU:~/mp3_project$ mp3pssm -h
+Using TensorFlow backend.
+usage: mp3pssm [-h] -i IN_FILE -o OUT_DIRECTORY -d BLAST_DB [-n NUM_THREADS]
+
+Wrapper utility for generating PSSM files using PSI-BLAST. This program
+generates PSSM profiles for FASTA sequences. You need to provide the path to
+an input FASTA file (multiple sequences are allowed) along with the
+destination directory where the PSSM files will be stored. The files will be
+named using the sequence ID in the FASTA file and will be saved with a '.pssm'
+extension. You also need to specify the path to the Uniref90 BLAST database
+and the number of threads you wish to use for the PSSM computation. By
+default, only 1 thread will be used.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i IN_FILE, --in_file IN_FILE
+                        Path to Input FASTA file containing protein sequences
+  -o OUT_DIRECTORY, --out_directory OUT_DIRECTORY
+                        Path to Output Directory to write PSSM files
+  -d BLAST_DB, --blast_db BLAST_DB
+                        Path to Uniref90 BLAST database
+  -n NUM_THREADS, --num_threads NUM_THREADS
+                        NNumber of threads (CPUs) to use in the BLAST search
+(mp3env) sanket@GPU:~/mp3_project$ 
+```
+## Example 2: Using Only the Command Line Scripts to Generate MP3 Vectors 
+
+To be added
+
+```text
+>PROT1
+MVKLTAELIEQAAQYTNAVRDRELDLRGYKIPVIENLGATLDQFDAIDFSDNEIRKLDGFPLLRRLKTLLVNNNRICRIG
+EGLDQALPDLTELILTNNSLVELGDLDPLASLKSLTYLCILRNPVTNKKHYRLYVIYKVPQVRVLDFQKVKLKERQEAEK
+MFKGKRGAQLAKDIAR
+>PROT2
+MDIRPNHTIYINNMNDKIKKEELKRSLYALFSQFGHVVDIVALKTMKMRGQAFVIFKELGSSTNALRQLQGFPFYGKPMR
+IQYAKTDSDIISKMRG
+```
+```console
+(mp3env) sanket@GPU:~/mp3_project$ mkdir pssm_dir vec_dir
+(mp3env) sanket@GPU:~/mp3_project$ ls
+mp3env  MP3vec  pssm_dir  test.fa  vec_dir
+(mp3env) sanket@GPU:~/mp3_project$ mp3pssm -i test.fa -o pssm_dir/ -d $BLASTDB -n 8
+Using TensorFlow backend.
+Generated PSSM for protein PROT1
+Generated PSSM for protein PROT2
+Generated PSSMs for 2 proteins
+(mp3env) sanket@GPU:~/mp3_project$
+```
+```console
+(mp3env) sanket@GPU:~/mp3_project$ mp3vec -i pssm_dir/ -o vec_dir/ -t NPY
+Using TensorFlow backend.
+Vectorized PROT1, file 1 / 2
+Vectorized PROT2, file 2 / 2
+(mp3env) sanket@GPU:~/mp3_project$
+(mp3env) sanket@GPU:~/mp3_project$ mp3vec -i pssm_dir/ -o vec_dir/ -t CSV
+Using TensorFlow backend.
+Vectorized PROT1, file 1 / 2
+Vectorized PROT2, file 2 / 2
+(mp3env) sanket@GPU:~/mp3_project$ ls vec_dir/
+PROT1.csv  PROT1.npy  PROT2.csv  PROT2.npy
+(mp3env) sanket@GPU:~/mp3_project$
 ```
