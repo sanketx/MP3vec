@@ -220,7 +220,7 @@ Installing setuptools, pip, wheel...done.
 sanket@GPU:~/mp3_project$ source mp3env/bin/activate
 (mp3env) sanket@GPU:~/mp3_project$
 ```
-Now we can install the MP3vec package along with its dependencies in the virtual environment that we have just created with ```pip install MP3vec/.```.
+Now you can install the MP3vec package along with its dependencies in the virtual environment that we have just created with ```pip install MP3vec/.```.
 ```console
 (mp3env) sanket@GPU:~/mp3_project$ pip install MP3vec/.
 Processing /home/sanket/mp3_project/MP3vec
@@ -229,7 +229,7 @@ Collecting tensorflow>=1.8.0 (from mp3vec==0.0.1)
 Successfully installed absl-py-0.4.0 astor-0.7.1 backports.weakref-1.0.post1 biopython-1.72 enum34-1.1.6 funcsigs-1.0.2 futures-3.2.0 gast-0.2.0 grpcio-1.14.1 h5py-2.8.0 keras-2.2.2 keras-applications-1.0.4 keras-preprocessing-1.0.2 markdown-2.6.11 mock-2.0.0 mp3vec-0.0.1 numpy-1.14.5 pbr-4.2.0 protobuf-3.6.1 pyyaml-3.13 scipy-1.1.0 setuptools-39.1.0 six-1.11.0 tensorboard-1.10.0 tensorflow-1.10.0 termcolor-1.1.0 werkzeug-0.14.1
 (mp3env) sanket@GPU:~/mp3_project$
 ```
-You can test the installation by opening a python shell and importing the module
+You can test the installation by opening a python shell and importing the module.
 
 ```console
 (mp3env) sanket@GPU:~/mp3_project$ python
@@ -245,10 +245,26 @@ The package has now been successfully installed along with the **mp3vec** and **
 
 ## Installation on Windows
 
+The first step is to install Python on Windows. You must install either version 3.5 or 3.6, since precompiled binaries for TensorFlow are currently not available for other versions of Python. You can get the Python Installer from https://www.python.org/downloads/windows/. Select the "Download Windows x86-64 executable installer" link for Python 3.6.6 and download the installer. Once it is downloaded, launch the installer. While installing, make sure you tick the "Add Python 3.6 to PATH" option before clicking on "Install Now". If you don't, you won't be able to launch Python from the Command Prompt. To test the install, open up the Command Prompt and type ```python```
+
+```console
+C:\Users\Sanket>python
+Python 3.6.6 (v3.6.6:4cf1f54eb7, Jun 27 2018, 03:37:03) [MSC v.1900 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+```
+
+You can download the MP3vec package as a zip file from https://github.com/sanketx/MP3vec/archive/master.zip. Make a new folder, say ```mp3_project``` and copy the ```MP3vec-master.zip``` file to this new folder. Now extract the contents with ```right-click > 7-zip > Extract here```. You should now have a new folder, ```MP3vec-master```, inside ```mp3_project``` which contains 3 files, ```MANIFEST.in```, ```README.md```, and ```setup.py``` along with a folder ```mp3vec```.
+
+It is recommended that you use a [virtual environment](https://virtualenv.pypa.io/en/stable/) for the installation of this package. This creates a separate environment making it easier to manage packages and their dependencies. To install the virtual environment package, type ```pip install virtualenv```.
+
+You can create a new virtual environment, say ```mp3env``` for installing the MP3vec package and its dependencies with ```virtualenv mp3env```. Once the environment is created, it needs to be activated with ```mp3env\Scripts\activate```.
+
 ```console
 C:\Users\Sanket>cd mp3_project
 
 C:\Users\Sanket\mp3_project>pip install virtualenv
+
 C:\Users\Sanket\mp3_project>virtualenv mp3env
 Using base prefix 'c:\\users\\sanket\\appdata\\local\\programs\\python\\python36'
 New python executable in C:\Users\Sanket\mp3_project\mp3env\Scripts\python.exe
@@ -259,6 +275,8 @@ C:\Users\Sanket\mp3_project>mp3env\Scripts\activate
 (mp3env) C:\Users\Sanket\mp3_project>
 ```
 
+Now you can install the MP3vec package along with its dependencies in the virtual environment that we have just created with ```pip install MP3vec-master\.```. Make sure that the ```setup.py``` and the ```mp3vec``` folder are present inside ```MP3vec-master```, otherwise the installation will fail.
+
 ```console
 (mp3env) C:\Users\Sanket\mp3_project>pip install MP3vec-master\.
 Processing c:\users\sanket\mp3_project\mp3vec-master
@@ -268,6 +286,8 @@ Successfully installed absl-py-0.4.0 astor-0.7.1 biopython-1.72 gast-0.2.0 grpci
 
 (mp3env) C:\Users\Sanket\mp3_project>
 ```
+
+The installation is almost complete, however, TensorFlow will not run properly if ```msvcp140.dll``` isn't installed. To install it, download it from https://www.microsoft.com/en-us/download/details.aspx?id=53587 and run the exe to install the file. You can test the installation by opening a python shell and importing the module.
 
 ```console
 (mp3env) C:\Users\Sanket\mp3_project>python
@@ -397,7 +417,7 @@ PROT1.csv  PROT1.npy  PROT2.csv  PROT2.npy
 (mp3env) sanket@GPU:~/mp3_project$
 ```
 
-Check the contents of ```vec_dir```, you should be able to see the generated vector files. You can now use these vectors for your Machine Learning experiments. If you're using Python, you can load the numpy matrices directly. R and Matlab users can load the vectors from the csv files.
+Check the contents of ```vec_dir```, you should be able to see the generated vector files. You can now use these vectors for your Machine Learning experiments. If you're using Python, you can load the numpy matrices directly. R and Matlab users can load the vectors from the csv files. Once you are done, you can deactivate the virtual environment by typing ```deactivate``` in the Terminal or Command Prompt.
 
 ## Example 2: A Python script for generating MP3 vectors
 
@@ -406,10 +426,11 @@ The ```mp3vec``` module has a core ```MP3Model``` class. The pretrained model pr
 
 A utility function, ```encode_file()```, is provided in order to read a PSSM file and convert it into a numpy array which can then be fed as input to the model. Note that this function automatically reads the protein sequence from the file and converts it to a one-hot encoded form. The function returns this sequence along with the protein matrix (one-hot vector + PSSM vec). The model's vectorize function can then be used to convert this protein matrix into the MP3 vector.
 
+Make sure that the virtual environment where you have installed MP3vec is active. Once you are done, you can deactivate this environment.
+
 ```python
 from mp3vec import *
 model = MP3Model()
 seq, protein_matrix = encode_file("PROT1.pssm")
 vec = model.vectorize(protein_matrix)
 ```
-
