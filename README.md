@@ -154,7 +154,34 @@ C:\Users\Sanket>
 
 ## Installation on Linux
 
-You can download the MP3vec package as a zip file from https://github.com/sanketx/MP3vec/archive/master.zip. Alternatively, you can clone the file using git from https://github.com/sanketx/MP3vec.git
+You can download the MP3vec package as a zip file from https://github.com/sanketx/MP3vec/archive/master.zip. Alternatively, you can clone the repository using ```git``` from https://github.com/sanketx/MP3vec.git. Create a new directory, say ```~/mp3_project``` and clone the MP3vec repositorty or copy the zip file into this directory. If you're using the zip file, you can extract the contents using the ```unzip``` command. You can also rename the extracted folder from ```MP3vec-master``` to ```MP3vec```.
+
+#### Using the zip file
+
+```console
+sanket@GPU:~$ mkdir mp3_project
+sanket@GPU:~$ cd mp3_project/
+sanket@GPU:~/mp3_project$ cp ~/Downloads/MP3vec-master.zip .
+sanket@GPU:~/mp3_project$ unzip MP3vec-master.zip 
+Archive:  MP3vec-master.zip
+2a8e3e6a764ed0e43256803c18f1be27c50435f3
+   creating: MP3vec-master/
+  inflating: MP3vec-master/MANIFEST.in  
+  inflating: MP3vec-master/README.md  
+   creating: MP3vec-master/mp3vec/
+ extracting: MP3vec-master/mp3vec/__init__.py  
+  inflating: MP3vec-master/mp3vec/make_pssm.py  
+  inflating: MP3vec-master/mp3vec/mp3_model.h5  
+  inflating: MP3vec-master/mp3vec/mp3vec.py  
+  inflating: MP3vec-master/mp3vec/vectorize_directory.py  
+  inflating: MP3vec-master/setup.py 
+sanket@GPU:~/mp3_project$ mv MP3vec-master MP3vec
+sanket@GPU:~/mp3_project$ ls MP3vec/
+MANIFEST.in  mp3vec  README.md  setup.py
+sanket@GPU:~/mp3_project$
+```
+
+#### Cloning the repository
 
 ```console
 sanket@GPU:~$ mkdir mp3_project
@@ -171,10 +198,20 @@ MANIFEST.in  mp3vec  README.md  setup.py
 sanket@GPU:~/mp3_project$
 ```
 
-It is recommended that you use a [virtual environment](https://virtualenv.pypa.io/en/stable/) for the installation of this package. This creates a separate environment making it easier to manage packages and their dependencies. You will need [pip](https://pip.pypa.io/en/stable/installing/) to install it, although it is automatically available in most cases. If you don't have it, follow the instructions at the link above. Once the environment is installed, it needs to be activated.
+It is recommended that you use a [virtual environment](https://virtualenv.pypa.io/en/stable/) for the installation of this package. This creates a separate environment making it easier to manage packages and their dependencies. You will need ```pip``` to install it. If you don't have ```pip```, follow the instructions at https://pip.pypa.io/en/stable/installing/ to install it. To install the virtual environment package, type ```pip install virtualenv```.
 
 ```console
 sanket@GPU:~/mp3_project$ pip install virtualenv
+Collecting virtualenv
+  Downloading https://files.pythonhosted.org/packages/b6/30/96a02b2287098b23b875bc8c2f58071c35d2efe84f747b64d523721dc2b5/virtualenv-16.0.0-py2.py3-none-any.whl (1.9MB)
+    100% |████████████████████████████████| 1.9MB 618kB/s 
+Installing collected packages: virtualenv
+Successfully installed virtualenv
+sanket@GPU:~/mp3_project$
+```
+You can create a new virtual environment, say ```mp3env``` for installing the MP3vec package and its dependencies with ```virtualenv mp3env```. If you wish to use a specific python version for creating the environment, specify the path to the desired python executable with the ```-p``` flag. For example, to use Python 3.x that comes with your system, you would type ```virtualenv -p /usr/bin/python3 mp3env```. The same process works if you want to use Python 2.7 instead. Once the environment is created, it needs to be activated with ```source mp3env/bin/activate```.
+
+```console
 sanket@GPU:~/mp3_project$ virtualenv -p /usr/bin/python2.7 mp3env
 Running virtualenv with interpreter /usr/bin/python2.7
 New python executable in /home/sanket/mp3_project/mp3env/bin/python2.7
@@ -183,7 +220,7 @@ Installing setuptools, pip, wheel...done.
 sanket@GPU:~/mp3_project$ source mp3env/bin/activate
 (mp3env) sanket@GPU:~/mp3_project$
 ```
-Now we can install the MP3vec package along with its dependencies in the virtual environment that we have just created.
+Now we can install the MP3vec package along with its dependencies in the virtual environment that we have just created with ```pip install MP3vec/.```.
 ```console
 (mp3env) sanket@GPU:~/mp3_project$ pip install MP3vec/.
 Processing /home/sanket/mp3_project/MP3vec
@@ -204,7 +241,7 @@ Using TensorFlow backend.
 >>> mp3vec.__version__
 '0.0.1'
 ```
-The package has now been successfully installed along with the utility scripts.
+The package has now been successfully installed along with the **mp3vec** and **mp3pssm** utility scripts.
 
 ## Installation on Windows
 
