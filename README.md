@@ -404,7 +404,7 @@ Check the contents of ```vec_dir```, you should be able to see the generated vec
 If you would like to generate MP3 vectors using a python script, you can import the ```mp3vec``` package into your code.
 The ```mp3vec``` module has a core ```MP3Model``` class. The pretrained model provided with this package is used by default but you can specify a custom model by specifying the model file in the class constructor. The ```vectorize()``` function can be called on a numpy array containing the PSSM and the one-hot encoded protein sequence. The output of this function is the MP3 vector for that protein.
 
-A utility function, ```encode_file```, is provided in order to read a PSSM file and convert it into a numpy array which can then be fed as input to the model. Note that this function automatically reads the protein sequence from the file and converts it to a one-hot encoded form. The function returns this sequence along with the protein matrix (one-hot vector + PSSM vec). The model's vectorize function can then be used to convert this protein matrix into the MP3 vector.
+A utility function, ```encode_file()```, is provided in order to read a PSSM file and convert it into a numpy array which can then be fed as input to the model. Note that this function automatically reads the protein sequence from the file and converts it to a one-hot encoded form. The function returns this sequence along with the protein matrix (one-hot vector + PSSM vec). The model's vectorize function can then be used to convert this protein matrix into the MP3 vector.
 
 ```python
 from mp3vec import *
