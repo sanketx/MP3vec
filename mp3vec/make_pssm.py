@@ -72,7 +72,7 @@ def make_pssm():
 	if num_threads is None:
 		num_threads = "1"
 	
-	if num_threads < 1:
+	elif num_threads < 1:
 		num_threads = "1"
 
 	else: num_threads = str(num_threads)
