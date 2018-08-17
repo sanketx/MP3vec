@@ -229,7 +229,7 @@ Collecting tensorflow>=1.8.0 (from mp3vec==0.0.1)
 Successfully installed absl-py-0.4.0 astor-0.7.1 backports.weakref-1.0.post1 biopython-1.72 enum34-1.1.6 funcsigs-1.0.2 futures-3.2.0 gast-0.2.0 grpcio-1.14.1 h5py-2.8.0 keras-2.2.2 keras-applications-1.0.4 keras-preprocessing-1.0.2 markdown-2.6.11 mock-2.0.0 mp3vec-0.0.1 numpy-1.14.5 pbr-4.2.0 protobuf-3.6.1 pyyaml-3.13 scipy-1.1.0 setuptools-39.1.0 six-1.11.0 tensorboard-1.10.0 tensorflow-1.10.0 termcolor-1.1.0 werkzeug-0.14.1
 (mp3env) sanket@GPU:~/mp3_project$
 ```
-You can test the install by opening a python shell and importing the module
+You can test the installation by opening a python shell and importing the module
 
 ```console
 (mp3env) sanket@GPU:~/mp3_project$ python
@@ -284,7 +284,7 @@ Using TensorFlow backend.
 
 ## Command line script for generating MP3 Vectors
 
-A command line utility, __mp3vec__ has been provided for users who wish to generate MP3vecs without writing code. This utility is automatically installed when you install the mp3vec python package. You can specify a directory containing PSSM files and the script will vectorize them and write them to a destination directory. Currently, two output formats are supported, the binary numpy format with a .npy extension and the CSV format with a .csv extension. You need to specify the format while using the script. An optional model parameter is available in case you want to use a custom model, by default the script uses the pre-trained model provided in the package. You can view the flags using the "-h" option.
+A command line utility, **mp3vec** has been provided for users who wish to generate MP3vecs without writing code. This utility is automatically installed when you install the mp3vec python package. You can specify a directory containing PSSM files and the script will vectorize them and write them to a destination directory. Currently, two output formats are supported, the binary numpy format with a .npy extension and the CSV format with a .csv extension. You need to specify the format while using the script. An optional model parameter is available in case you want to use a custom model, by default the script uses the pre-trained model provided in the package. You can view the flags with ```mp3vec -h```.
 
 ```console
 (mp3env) sanket@GPU:~/mp3_project$ mp3vec -h
@@ -318,7 +318,7 @@ optional arguments:
 
 ## Command line script for generating PSSM files using PSI-BLAST
 
-To be added
+The **mp3pssm** utility has been provided to ease the process of PSSM generation. It enables users to provide a single input fasta file with protein sequences and **mp3pssm** will automatically generate PSSMs for each sequence. You need to specify the input file, the destination directory for generated PSSM files, the BLAST database location (which you should have stored in the BLASTDB environment variable, if not, check the section "Installation of NCBI BLAST+ and Uniref90" for instructions. You can optionally specify the number of threads you wish to use in the BLAST search. You can view the flags with ```mp3pssm -h```.
 
 ```console
 (mp3env) sanket@GPU:~/mp3_project$ mp3pssm -h
@@ -349,7 +349,9 @@ optional arguments:
 
 ## Example 1: Using the command line scripts to generate MP3 vectors 
 
-To be added
+The following example takes you through the steps of using the command line scripts to generate MP3 vectors for a FASTA file with two protein sequences. The steps are nearly identical for both Linux and Windows platforms, and any differences will be highlighted.
+
+First, copy the contents of the text box below and save them as a FASTA file, say ```test.fa```, in the ```mp3_project``` folder. For Windows users, this folder will be ```C:\Users\Sanket\mp3_project>```, for Linux users this will be the ```~/mp3_project``` directory.
 
 ```text
 >PROT1
@@ -360,6 +362,10 @@ MFKGKRGAQLAKDIAR
 MDIRPNHTIYINNMNDKIKKEELKRSLYALFSQFGHVVDIVALKTMKMRGQAFVIFKELGSSTNALRQLQGFPFYGKPMR
 IQYAKTDSDIISKMRG
 ```
+You should now have a file ```test.fa``` in the ```mp3_project``` folder. Now make two new folders in the ```mp3_project``` folder, one called ```pssm_dir``` for storing the generated PSSM files, and another called ```vec_dir``` to store the generated MP3 vectors. Do this using the command ```mkdir pssm_dir vec_dir```. Now you are ready to run the ```mp3pssm``` utility to generate the PSSM profiles for the protein sequences in ```test.fa```.
+
+Linux users should run the command ```mp3pssm -i test.fa -o pssm_dir/ -d $BLASTDB -n 8```, while Windows users should run the command ```mp3pssm -i test.fa -o pssm_dir/ -d %BLASTDB% -n 8```. The only difference is in the way the ```BLASTDB``` environment variable is provided. Make sure you have activated the virtual environment prior to running the script, otherwise you will get a ```command not found / unrecognized command``` error message. You can tell if the virtual environment is active by looking for the name of the environment enclosed in parentheses before the prompt, like ```(mp3env) sanket@GPU:~$``` or ```(mp3env) C:\Users\Sanket>```.
+
 ```console
 (mp3env) sanket@GPU:~/mp3_project$ mkdir pssm_dir vec_dir
 (mp3env) sanket@GPU:~/mp3_project$ ls
@@ -371,6 +377,11 @@ Generated PSSM for protein PROT2
 Generated PSSMs for 2 proteins
 (mp3env) sanket@GPU:~/mp3_project$
 ```
+
+You can check the contents of ```pssm_dir``` to see if the PSSM files have been generated. You should find ```PROT1.pssm``` and ```PROT2.pssm``` in the folder. Keep in mind that the file name of the generated file will be the same as the text provided in the FASTA file after the initial ```>``` symbol. The ```.pssm``` extension is automatically added to this name. In rare cases, running the PSI-BLAST query will not result in any hits, and no output PSSM file will be created. Unfortunately, MP3 vectors cannot be generated without the PSSM file.
+
+Once the PSSM files have been generated and stored in ```pssm_dir```, you can run the ```mp3vec``` command to generate MP3 vectors from these files. From within the ```mp3_project``` directory, run the command ```mp3vec -i pssm_dir/ -o vec_dir/ -t NPY``` to save the vectors as numpy files, or run ```mp3vec -i pssm_dir/ -o vec_dir/ -t CSV``` to save the vectors as CSV files. The output file names will the same as the input file names, only the extension will be different, either .npy or .csv depending on your choice of the output file type. Please note that the ```mp3vec``` script will only search the input folder for files ending with .pssm, any other files will be ignored.
+
 ```console
 (mp3env) sanket@GPU:~/mp3_project$ mp3vec -i pssm_dir/ -o vec_dir/ -t NPY
 Using TensorFlow backend.
@@ -386,13 +397,19 @@ PROT1.csv  PROT1.npy  PROT2.csv  PROT2.npy
 (mp3env) sanket@GPU:~/mp3_project$
 ```
 
+Check the contents of ```vec_dir```, you should be able to see the generated vector files. You can now use these vectors for your Machine Learning experiments. If you're using Python, you can load the numpy matrices directly. R and Matlab users can load the vectors from the csv files.
+
 ## Example 2: A Python script for generating MP3 vectors
-The mp3vec module has a core MP3Model class. The pretrained model provided with this package is used by default but you can specify a custom model by specifying the model file in the class constructor. A utility function "encode_file" is provided in order to read a PSSM file and convert it into a numpy array which can then be fed as input to the model. Note that this function automatically reads the protein sequence from the file and converts it to a one-hot vector form. The function returns this sequence along with the protein matrix (one-hot vector + PSSM vec). The model's vectorize function can then be used to convert this protein matrix into the MP3 vector.
+
+If you would like to generate MP3 vectors using a python script, you can import the ```mp3vec``` package into your code.
+The ```mp3vec``` module has a core ```MP3Model``` class. The pretrained model provided with this package is used by default but you can specify a custom model by specifying the model file in the class constructor. The ```vectorize()``` function can be called on a numpy array containing the PSSM and the one-hot encoded protein sequence. The output of this function is the MP3 vector for that protein.
+
+A utility function "encode_file" is provided in order to read a PSSM file and convert it into a numpy array which can then be fed as input to the model. Note that this function automatically reads the protein sequence from the file and converts it to a one-hot encoded form. The function returns this sequence along with the protein matrix (one-hot vector + PSSM vec). The model's vectorize function can then be used to convert this protein matrix into the MP3 vector.
 
 ```python
 from mp3vec import *
 model = MP3Model()
-seq, protein_matrix = encode_file("PROT2.pssm")
+seq, protein_matrix = encode_file("PROT1.pssm")
 vec = model.vectorize(protein_matrix)
 ```
 
