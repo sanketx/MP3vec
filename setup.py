@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
 
 	name = "mp3vec",
-	version = '0.0.1',
+	version = '0.1.0',
 	description = "A Transferable Feature Representation Method for Protein Sequences",
 	url = "https://github.com/sanketx/MP3vec",
 	author = "Sanket Rajan Gupte",
