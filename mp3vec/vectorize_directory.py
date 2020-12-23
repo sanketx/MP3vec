@@ -4,7 +4,8 @@ import glob
 import argparse
 
 import numpy as np
-from mp3vec import *
+from mp3vec import MP3Model
+
 
 def vectorize_directory():
 
@@ -17,35 +18,35 @@ def vectorize_directory():
 	vectors will be stored. Finally, you need to specify the output file format, either
 	numpy array or CSV file.
 	"""
-	parser = argparse.ArgumentParser(description = description)
-	
+	parser = argparse.ArgumentParser(description=description)
+
 	parser.add_argument(
 		"-i", "--in_directory",
-		help = "Path to Input Directory containing PSSM files",
-		action = "store",
-		required = True
+		help="Path to Input Directory containing PSSM files",
+		action="store",
+		required=True
 	)
 
 	parser.add_argument(
 		"-o", "--out_directory",
-		help = "Path to Output Directory to write MP3vec files",
-		action = "store",
-		required = True
+		help="Path to Output Directory to write MP3vec files",
+		action="store",
+		required=True
 	)
 
 	parser.add_argument(
 		"-m", "--model_file",
-		help = "Path to MP3 model file. Optional parameter for custom models",
-		action = "store",
-		required = False
+		help="Path to MP3 model file. Optional parameter for custom models",
+		action="store",
+		required=False
 	)
 
 	parser.add_argument(
 		"-t", "--otype",
-		help = "Output file format. numpy (NPY) or comma separated values (CSV)",
-		action = "store",
-		required = True,
-		choices = ["NPY", "CSV"]
+		help="Output file format. numpy (NPY) or comma separated values (CSV)",
+		action="store",
+		required=True,
+		choices=["NPY", "CSV"]
 	)
 
 	args = parser.parse_args()
@@ -70,7 +71,7 @@ def vectorize_directory():
 		sys.exit(0)
 
 	pssm_list = glob.glob(os.path.join(in_directory, "*.pssm"))
-	
+
 	if len(pssm_list) == 0:
 		print("No files with '.pssm' extension found in the Input Directory")
 		sys.exit(0)
@@ -80,7 +81,7 @@ def vectorize_directory():
 	model = MP3Model(model_file)
 
 	for i, fname in enumerate(sorted(pssm_list), 1):
-		seq, protein_matrix = encode_file(fname)
+		_, protein_matrix = model.encode_file(fname)
 		vec = model.vectorize(protein_matrix)
 		ofname = os.path.split(fname)[1].split('.')[0]
 
@@ -90,6 +91,6 @@ def vectorize_directory():
 
 		else:
 			dest = os.path.join(out_directory, ofname + '.csv')
-			np.savetxt(dest, vec, fmt = "%.16f", delimiter = ',')
+			np.savetxt(dest, vec, fmt="%.16f", delimiter=',')
 
-		print("Vectorized %s, file %d / %d" % (ofname, i, len(pssm_list)))
+		print(f"Vectorized {ofname}, file {i} / {len(pssm_list)}")
